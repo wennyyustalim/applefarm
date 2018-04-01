@@ -40,6 +40,54 @@ float angleX = 0;            //The rotation of the box
 float angleY = 0;
 GLuint _textureId;           //The OpenGL id of the texture
 
+void incrementAngle(float& angle) {
+	angle+=3.0f;
+	if(angle > 360) {
+		angle-=360;
+	}
+}
+
+void decrementAngle(float& angle) {
+	angle-=3.0f;
+	if(angle < 0) {
+		angle+=360;
+	}
+}
+
+int prevX = 0;
+int prevY = 0;
+
+void mouseClickHandler(int button, int state, int x, int y) {
+	// printf("%d %d %d %d\n",button,state,x,y ); 
+	if(state == 0) {
+		prevX = x;
+		prevY = y;
+	}
+}
+
+void processMouseActiveMotion(int x, int y) {
+	angleX-= x-prevX;
+	angleY-= y-prevY;
+	if(angleX > 360) {
+		angleX -= 360;
+	}
+	if(angleY > 360) {
+		angleY -= 360;
+	}
+
+	if(angleX < 0) {
+		angleX += 360;
+	}
+
+	if(angleY < 0) {
+		angleY += 360;
+	}
+	prevX = x;
+	prevY = y;
+	// printf("%d %d\n",x,y ); 	
+}
+
+
 void handleKeypress(unsigned char key, int x, int y) {
 	// printf("key: %c\n", key);
 	switch (key) {
@@ -47,19 +95,19 @@ void handleKeypress(unsigned char key, int x, int y) {
 			exit(0);
 		case 'A':
 		case 'a':
-			angleX-=1.0f;
+			decrementAngle(angleX);
 			break;
 		case 'D':
 		case 'd':
-			angleX+=1.0f;
+			incrementAngle(angleX);
 			break;
 		case 'W':
 		case 'w':
-			angleY-=1.0f;
+			decrementAngle(angleY);
 			break;
 		case 'S':
 		case 's':
-			angleY+=1.0f;
+			incrementAngle(angleY);
 			break;
 	}
 	glutPostRedisplay();
@@ -182,6 +230,8 @@ void update(int value) {
 	glutTimerFunc(25, update, 0);
 }
 
+
+
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -192,6 +242,8 @@ int main(int argc, char** argv) {
 	
 	glutDisplayFunc(drawScene);
 	glutKeyboardFunc(handleKeypress);
+	glutMouseFunc(mouseClickHandler);
+	glutMotionFunc(processMouseActiveMotion);
 	glutReshapeFunc(handleResize);
 	glutTimerFunc(25, update, 0);
 	
