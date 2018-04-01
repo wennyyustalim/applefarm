@@ -36,14 +36,33 @@
 using namespace std;
 
 const float BOX_SIZE = 7.0f; //The length of each side of the cube
-float _angle = 0;            //The rotation of the box
+float angleX = 0;            //The rotation of the box
+float angleY = 0;
 GLuint _textureId;           //The OpenGL id of the texture
 
 void handleKeypress(unsigned char key, int x, int y) {
+	// printf("key: %c\n", key);
 	switch (key) {
 		case 27: //Escape key
 			exit(0);
+		case 'A':
+		case 'a':
+			angleX-=1.0f;
+			break;
+		case 'D':
+		case 'd':
+			angleX+=1.0f;
+			break;
+		case 'W':
+		case 'w':
+			angleY-=1.0f;
+			break;
+		case 'S':
+		case 's':
+			angleY+=1.0f;
+			break;
 	}
+	glutPostRedisplay();
 }
 
 void initRendering() {
@@ -77,8 +96,9 @@ void drawScene() {
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 	
-	glRotatef(-_angle, 1.0f, 1.0f, 0.0f);
-	
+	glRotatef(-angleX, 0.0f, 1.0f, 0.0f);
+	glRotatef(-angleY, 1.0f, 0.0f, 0.0f);
+
 	glBegin(GL_QUADS);
 	
 	//Top face
@@ -154,10 +174,10 @@ void drawScene() {
 
 //Called every 25 milliseconds
 void update(int value) {
-	_angle += 1.0f;
-	if (_angle > 360) {
-		_angle -= 360;
-	}
+	// _angle += 1.0f;
+	// if (_angle > 360) {
+	// 	_angle -= 360;
+	// }
 	glutPostRedisplay();
 	glutTimerFunc(25, update, 0);
 }
