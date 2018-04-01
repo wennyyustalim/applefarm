@@ -1,88 +1,189 @@
-#include <stdio.h>
+/* Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+/* File for "Putting It All Together" lesson of the OpenGL tutorial on
+ * www.videotutorialsrock.com
+ */
+
+
+
+#include <iostream>
 #include <stdlib.h>
+
+#ifdef __APPLE__
+#include <OpenGL/OpenGL.h>
 #include <GLUT/glut.h>
-#include <math.h>
-#include <string.h>
-
-GLint WINDOW_SIZE_X = 1000;
-GLint WINDOW_SIZE_Y = 800;
-GLint WINDOW_START_X = 0;
-GLint WINDOW_START_Y = 0;
-
-// GLfloat xt=0.0,yt=0.0,zt=0.0,xw=0.0;   /* x,y,z translation */
-// GLfloat tx=295,ty=62;
-// GLfloat xs=1.0,ys=1.0,zs=1.0;
-
-// GLfloat xangle=0.0,yangle=0.0,zangle=0.0,angle=0.0;    axis angles 
-
-// GLfloat r=0,g=0,b=1;
-// GLint light=1;
-// int count=1,flg=1;
-// int view=0;
-// int flag1=0,aflag=1;            //to switch car driving mode
-// int flag2=0,wheelflag=0;   //to switch fog effect
-GLUquadricObj *t;
+#else
+#include <GL/glut.h>
+#endif
 
 
-GLvoid DrawGLScene() {
+using namespace std;
+
+const float BOX_SIZE = 7.0f; //The length of each side of the cube
+float _angle = 0;            //The rotation of the box
+GLuint _textureId;           //The OpenGL id of the texture
+
+void handleKeypress(unsigned char key, int x, int y) {
+	switch (key) {
+		case 27: //Escape key
+			exit(0);
+	}
+}
+
+void initRendering() {
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_NORMALIZE);
+	glEnable(GL_COLOR_MATERIAL);
+}
+
+void handleResize(int w, int h) {
+	glViewport(0, 0, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
+}
+
+void drawScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glBegin(GL_TRIANGLES);
-	glColor3f( 1, 1, 0 ); // red
-	glVertex2f( -0.8, -0.8 );
-	glColor3f( 0.3, 0.4, 0 ); // green
-	glVertex2f( 0.8, -0.8 );
-	glColor3f( 0, 0, 1 ); // blue
-	glVertex2f( 0, 0.9 );
-	glEnd(); 
-
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
+	glTranslatef(0.0f, 0.0f, -20.0f);
+	
+	GLfloat ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
+	
+	GLfloat lightColor[] = {0.7f, 0.7f, 0.7f, 1.0f};
+	GLfloat lightPos[] = {-2 * BOX_SIZE, BOX_SIZE, 4 * BOX_SIZE, 1.0f};
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+	
+	glRotatef(-_angle, 1.0f, 1.0f, 0.0f);
+	
+	glBegin(GL_QUADS);
+	
+	//Top face
+	glColor3f(1.0f, 1.0f, 0.0f);
+	glNormal3f(0.0, 1.0f, 0.0f);
+	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
+	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
+	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
+	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
+	
+	//Bottom face
+	glColor3f(1.0f, 0.0f, 1.0f);
+	glNormal3f(0.0, -1.0f, 0.0f);
+	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
+	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
+	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
+	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
+	
+	//Left face
+	glNormal3f(-1.0, 0.0f, 0.0f);
+	glColor3f(0.0f, 1.0f, 1.0f);
+	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
+	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
+	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
+	
+	//Right face
+	glNormal3f(1.0, 0.0f, 0.0f);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
+	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
+	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
+	
+	glEnd();
+	
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, _textureId);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glBegin(GL_QUADS);
+	
+	//Front face
+	glNormal3f(0.0, 0.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
+	
+	//Back face
+	glNormal3f(0.0, 0.0f, -1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
+	
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	
 	glutSwapBuffers();
 }
 
-GLvoid Transform(GLfloat Width, GLfloat Height) {
-  glViewport(0, 0, Width, Height);              /* Set the viewport */
-  glMatrixMode(GL_PROJECTION);                  /* Select the projection matrix */
-  glLoadIdentity();				/* Reset The Projection Matrix */
-  gluPerspective(45.0,Width/Height,0.1,100.0);  /* Calculate The Aspect Ratio Of The Window */
-  glMatrixMode(GL_MODELVIEW);                   /* Switch back to the modelview matrix */
+//Called every 25 milliseconds
+void update(int value) {
+	_angle += 1.0f;
+	if (_angle > 360) {
+		_angle -= 360;
+	}
+	glutPostRedisplay();
+	glutTimerFunc(25, update, 0);
 }
 
-GLvoid InitGL(GLfloat Width, GLfloat Height) {
-	glClearColor(1.0, 1.0, 1.0, 1.0);
-	glLineWidth(2.0);              /* Add line width,   ditto */
-	Transform( Width, Height ); /* Perform the transformation */
-	//newly added
-	t = gluNewQuadric();
-	gluQuadricDrawStyle(t, GLU_FILL);
-
-	glEnable(GL_LIGHTING);
-
-	glEnable(GL_LIGHT0);
-
-	// Create light components
-	GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
-	GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
-	GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	GLfloat position[] = { 1.5f, 1.0f, 4.0f, 1.0f };
-
-	// Assign created components to GL_LIGHT0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
-	glLightfv(GL_LIGHT0, GL_POSITION, position);
-}
-
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGBA |
-						GLUT_DOUBLE |
-						GLUT_DEPTH);
-	glutInitWindowSize(WINDOW_SIZE_X,WINDOW_SIZE_Y);
-	glutInitWindowPosition(WINDOW_START_X, WINDOW_START_Y);
-
-	glutCreateWindow("AppleFarm Kijang");
-	glutDisplayFunc(DrawGLScene);
-	InitGL(WINDOW_SIZE_X, WINDOW_SIZE_Y);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitWindowSize(400, 400);
+	
+	glutCreateWindow("Putting It All Together - videotutorialsrock.com");
+	initRendering();
+	
+	glutDisplayFunc(drawScene);
+	glutKeyboardFunc(handleKeypress);
+	glutReshapeFunc(handleResize);
+	glutTimerFunc(25, update, 0);
+	
 	glutMainLoop();
-	return 1;
+	return 0;
 }
+
+
+
+
+
+
+
+
+
