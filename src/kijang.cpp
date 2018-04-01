@@ -35,7 +35,7 @@
 
 using namespace std;
 
-const float BOX_SIZE = 7.0f; //The length of each side of the cube
+const float BOX_SIZE = 5.0f; //The length of each side of the cube
 float angleX = 0;            //The rotation of the box
 float angleY = 0;
 GLuint _textureId;           //The OpenGL id of the texture
@@ -84,6 +84,7 @@ void processMouseActiveMotion(int x, int y) {
 	}
 	prevX = x;
 	prevY = y;
+	glutPostRedisplay();
 	// printf("%d %d\n",x,y ); 	
 }
 
@@ -147,97 +148,115 @@ void drawScene() {
 	glRotatef(-angleX, 0.0f, 1.0f, 0.0f);
 	glRotatef(-angleY, 1.0f, 0.0f, 0.0f);
 
-	glBegin(GL_QUADS);
-	
-	//Top face
-	glColor3f(1.0f, 1.0f, 0.0f);
-	glNormal3f(0.0, 1.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	
-	//Bottom face
-	glColor3f(1.0f, 0.0f, 1.0f);
-	glNormal3f(0.0, -1.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	
-	//Left face
-	glNormal3f(-1.0, 0.0f, 0.0f);
-	glColor3f(0.0f, 1.0f, 1.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	
-	//Right face
-	glNormal3f(1.0, 0.0f, 0.0f);
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	
+	glColor3f(1,0,0);
+	//Front Face
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2,-BOX_SIZE/2,BOX_SIZE);
+	glVertex3f(BOX_SIZE/2,-BOX_SIZE/2,BOX_SIZE);
+	glVertex3f(BOX_SIZE/2,-BOX_SIZE/5,BOX_SIZE);
+	glVertex3f(-BOX_SIZE/2,-BOX_SIZE/5,BOX_SIZE);
 	glEnd();
-	
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, _textureId);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glBegin(GL_QUADS);
-	
-	//Front face
-	glNormal3f(0.0, 0.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	
-	//Back face
-	glNormal3f(0.0, 0.0f, -1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	
+
+	glColor3f(1,1,0);
+	//Kap Mobil
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/5,BOX_SIZE); 
+	glVertex3f(BOX_SIZE/2, -BOX_SIZE/5,BOX_SIZE); 
+	glVertex3f(BOX_SIZE/2, 0,BOX_SIZE/3); 
+	glVertex3f(-BOX_SIZE/2, 0,BOX_SIZE/3); 
 	glEnd();
+
+
+	//KacaDepan Mobil
+	glColor3f(1,0.5,0);
+	glBegin(GL_POLYGON);
+	glVertex3f(BOX_SIZE/2, 0,BOX_SIZE/3); 
+	glVertex3f(-BOX_SIZE/2, 0,BOX_SIZE/3); 
+	glVertex3f(-BOX_SIZE/2, BOX_SIZE/2,BOX_SIZE/5);
+	glVertex3f(BOX_SIZE/2, BOX_SIZE/2,BOX_SIZE/5);
+	glEnd();
+
+	//Atap Mobil
+	glColor3f(0.5,1,0);
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2, BOX_SIZE/2,BOX_SIZE/5);
+	glVertex3f(BOX_SIZE/2, BOX_SIZE/2,BOX_SIZE/5);
+	glVertex3f(BOX_SIZE/2, BOX_SIZE/2, -BOX_SIZE*1.2);
+	glVertex3f(-BOX_SIZE/2, BOX_SIZE/2, -BOX_SIZE*1.2);
+	glEnd();
+
+	//KacaBelakangMobil
+	glColor3f(0.5,0.5,0.5);
+	glBegin(GL_POLYGON);
+	glVertex3f(BOX_SIZE/2, BOX_SIZE/2, -BOX_SIZE*1.2);
+	glVertex3f(-BOX_SIZE/2, BOX_SIZE/2, -BOX_SIZE*1.2);
+	glVertex3f(-BOX_SIZE/2, 0, -BOX_SIZE*1.4);
+	glVertex3f(BOX_SIZE/2, 0, -BOX_SIZE*1.4);
+	glEnd();
+
+	//Bagasi Mobil
+	glColor3f(0.5,0,0.8);
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2, 0, -BOX_SIZE*1.4);
+	glVertex3f(BOX_SIZE/2, 0, -BOX_SIZE*1.4);
+	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2, -BOX_SIZE*1.4);
+	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2, -BOX_SIZE*1.4);
+	glEnd();
+
+	//Kolong Mobil
+	glColor3f(0.8,0,0.8);
+	glBegin(GL_POLYGON);
+	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2, -BOX_SIZE*1.4);
+	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2, -BOX_SIZE*1.4);
+	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2, BOX_SIZE);
+	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2, BOX_SIZE);
+	glEnd();
+
+
+	//Sisi Kanan Mobil
+	glColor3f(0.8,1,0.8);
+	glBegin(GL_POLYGON);
+	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2, BOX_SIZE);
+	glVertex3f(BOX_SIZE/2, -BOX_SIZE/5, BOX_SIZE);
+	glVertex3f(BOX_SIZE/2, 0,BOX_SIZE/3); 
+	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2,BOX_SIZE/3); 
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex3f(BOX_SIZE/2, 0,BOX_SIZE/3); 
+	glVertex3f(BOX_SIZE/2, BOX_SIZE/2,BOX_SIZE/5);
+	glVertex3f(BOX_SIZE/2, BOX_SIZE/2, -BOX_SIZE*1.2);
+	glVertex3f(BOX_SIZE/2, 0, -BOX_SIZE*1.4);
+	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2, -BOX_SIZE*1.4);
+	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2,BOX_SIZE/3); 
+	glEnd();
+
+	glColor3f(0.2,0,0.2);
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2, BOX_SIZE);
+	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/5, BOX_SIZE);
+	glVertex3f(-BOX_SIZE/2, 0,BOX_SIZE/3); 
+	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2,BOX_SIZE/3); 
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2, 0,BOX_SIZE/3); 
+	glVertex3f(-BOX_SIZE/2, BOX_SIZE/2,BOX_SIZE/5);
+	glVertex3f(-BOX_SIZE/2, BOX_SIZE/2, -BOX_SIZE*1.2);
+	glVertex3f(-BOX_SIZE/2, 0, -BOX_SIZE*1.4);
+	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2, -BOX_SIZE*1.4);
+	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2,BOX_SIZE/3); 
+	glEnd();
+
 	glDisable(GL_TEXTURE_2D);
-	
+
 	glutSwapBuffers();
 }
-
-//Called every 25 milliseconds
-void update(int value) {
-	// _angle += 1.0f;
-	// if (_angle > 360) {
-	// 	_angle -= 360;
-	// }
-	glutPostRedisplay();
-	glutTimerFunc(25, update, 0);
-}
-
-
 
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(400, 400);
+	glutInitWindowSize(800, 800);
 	
-	glutCreateWindow("Putting It All Together - videotutorialsrock.com");
+	glutCreateWindow("AppleFarm - Kijang");
 	initRendering();
 	
 	glutDisplayFunc(drawScene);
@@ -245,7 +264,7 @@ int main(int argc, char** argv) {
 	glutMouseFunc(mouseClickHandler);
 	glutMotionFunc(processMouseActiveMotion);
 	glutReshapeFunc(handleResize);
-	glutTimerFunc(25, update, 0);
+	// glutTimerFunc(25wwupdate, 0);
 	
 	glutMainLoop();
 	return 0;
