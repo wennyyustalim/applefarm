@@ -24,16 +24,56 @@
 
 #include <iostream>
 #include <stdlib.h>
-
+#include <math.h>
 #ifdef __APPLE__
 #include <OpenGL/OpenGL.h>
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #endif
-
-
+#define PI 3.1415927
 using namespace std;
+
+void draw_cylinder(GLfloat x,
+				   GLfloat y,
+				   GLfloat radius,
+                   GLfloat height,
+                   GLubyte R,
+                   GLubyte G,
+                   GLubyte B) {
+    GLfloat angle          = 0.0;
+    GLfloat angle_stepsize = 0.1;
+
+    /** Draw the tube */
+    glColor3ub(R-40,G-40,B-40);
+    glBegin(GL_QUAD_STRIP);
+    angle = 0.0;
+    while( angle < 2*PI ) {
+        x = radius * cos(angle);
+        y = radius * sin(angle);
+        glVertex3f(x, y , height);
+        glVertex3f(x, y , 0.0);
+        angle = angle + angle_stepsize;
+    }
+    glVertex3f(radius, 0.0, height);
+    glVertex3f(radius, 0.0, 0.0);
+    glEnd();
+
+    /** Draw the circle on top of cylinder */
+    glColor3ub(R,G,B);
+    glBegin(GL_POLYGON);
+    angle = 0.0;
+    while( angle < 2*PI ) {
+        x = radius * cos(angle);
+        y = radius * sin(angle);
+        glVertex3f(x, y , height);
+        angle = angle + angle_stepsize;
+    }
+    glVertex3f(radius, 0.0, height);
+    glEnd();
+}
+
+
 
 const float BOX_SIZE = 5.0f; //The length of each side of the cube
 float angleX = 0;            //The rotation of the box
@@ -230,7 +270,7 @@ void drawScene() {
 	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2,BOX_SIZE/3); 
 	glEnd();
 
-	glColor3f(0.2,0,0.2);
+	glColor3f(1.0,0.4,0.8);
 	glBegin(GL_POLYGON);
 	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2, BOX_SIZE);
 	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/5, BOX_SIZE);
@@ -245,6 +285,84 @@ void drawScene() {
 	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2, -BOX_SIZE*1.4);
 	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2,BOX_SIZE/3); 
 	glEnd();
+	
+	// glVertex3f(BOX_SIZE/2,-BOX_SIZE/2,BOX_SIZE);
+	// draw_cylinder(-BOX_SIZE/2, -BOX_SIZE/2, 1.0, 1.0, 0.5, 0.5, 0.5);
+	// draw_cylinder(0.0, 0.0, 3.0, 3.0, 0.5, 0.5, 0.5);
+	glColor3f(1,1,1);
+	// Roda kiri depan
+	GLUquadricObj *quadratic;
+	glTranslatef((BOX_SIZE/2)-.5,-BOX_SIZE/2,BOX_SIZE/3);
+	quadratic = gluNewQuadric();
+	glRotated(90.0f, 0.0f, 1.0f, 0.0f);
+	gluCylinder(quadratic,1.0f,1.0f,1.0f,32,32);
+	gluDeleteQuadric(quadratic);
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,1.0f,32,32);
+	gluDeleteQuadric(quadratic);
+	glTranslatef(0,0,1);
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,1.0f,32,32);
+	gluDeleteQuadric(quadratic);
+	glTranslatef(0,0,-1);
+	glRotated(-90.0f, 0.0f, 1.0f, 0.0f);
+
+	// Roda kanan depan
+	glTranslatef(-BOX_SIZE,0,0);
+	GLUquadricObj *quadratic2;
+	glRotated(90.0f, 0.0f, 1.0f, 0.0f);
+	quadratic2 = gluNewQuadric();
+	gluCylinder(quadratic2,1.0f,1.0f,1.0f,32,32);
+	gluDeleteQuadric(quadratic2);
+
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,1.0f,32,32);
+	gluDeleteQuadric(quadratic);
+	glTranslatef(0,0,1);
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,1.0f,32,32);
+	gluDeleteQuadric(quadratic);
+	glTranslatef(0,0,-1);
+
+	glRotated(-90.0f, 0.0f, 1.0f, 0.0f);
+
+
+	glTranslatef(0,0,-BOX_SIZE*1.2);
+	glRotated(90.0f, 0.0f, 1.0f, 0.0f);
+	quadratic2 = gluNewQuadric();
+	gluCylinder(quadratic2,1.0f,1.0f,1.0f,32,32);
+	gluDeleteQuadric(quadratic2);
+
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,1.0f,32,32);
+	gluDeleteQuadric(quadratic);
+	glTranslatef(0,0,1);
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,1.0f,32,32);
+	gluDeleteQuadric(quadratic);
+	glTranslatef(0,0,-1);
+
+	glRotated(-90.0f, 0.0f, 1.0f, 0.0f);
+
+	glTranslatef(BOX_SIZE,0,0);
+	glRotated(90.0f, 0.0f, 1.0f, 0.0f);
+	quadratic2 = gluNewQuadric();
+	gluCylinder(quadratic2,1.0f,1.0f,1.0f,32,32);
+
+	gluDeleteQuadric(quadratic2);
+
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,1.0f,32,32);
+	gluDeleteQuadric(quadratic);
+	glTranslatef(0,0,1);
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,1.0f,32,32);
+	gluDeleteQuadric(quadratic);
+	glTranslatef(0,0,-1);
+
+	
+	glRotated(-90.0f, 0.0f, 1.0f, 0.0f);
+
 
 	glDisable(GL_TEXTURE_2D);
 
@@ -255,7 +373,10 @@ int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(800, 800);
-	
+
+	// glClearColor(1.0f, 1.0f, 1.0f);	// White Background
+
+
 	glutCreateWindow("AppleFarm - Kijang");
 	initRendering();
 	
@@ -265,7 +386,7 @@ int main(int argc, char** argv) {
 	glutMotionFunc(processMouseActiveMotion);
 	glutReshapeFunc(handleResize);
 	// glutTimerFunc(25wwupdate, 0);
-	
+	// glClear ( GL_COLOR_BUFFER_BIT ) ;
 	glutMainLoop();
 	return 0;
 }
