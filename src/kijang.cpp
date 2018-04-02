@@ -188,7 +188,7 @@ void drawScene() {
 	glRotatef(-angleX, 0.0f, 1.0f, 0.0f);
 	glRotatef(-angleY, 1.0f, 0.0f, 0.0f);
 
-	glColor3f(1,0,0);
+	glColor3f(0.459084,0.184313,0.184313);
 	//Front Face
 	glBegin(GL_POLYGON);
 	glVertex3f(-BOX_SIZE/2,-BOX_SIZE/2,BOX_SIZE);
@@ -197,7 +197,7 @@ void drawScene() {
 	glVertex3f(-BOX_SIZE/2,-BOX_SIZE/5,BOX_SIZE);
 	glEnd();
 
-	glColor3f(1,1,0);
+	glColor3f(0.459084,0.184313,0.184313);
 	//Kap Mobil
 	glBegin(GL_POLYGON);
 	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/5,BOX_SIZE); 
@@ -208,7 +208,7 @@ void drawScene() {
 
 
 	//KacaDepan Mobil
-	glColor3f(1,0.5,0);
+	glColor3f(0.459084,0.184313,0.184313);
 	glBegin(GL_POLYGON);
 	glVertex3f(BOX_SIZE/2, 0,BOX_SIZE/3); 
 	glVertex3f(-BOX_SIZE/2, 0,BOX_SIZE/3); 
@@ -216,8 +216,17 @@ void drawScene() {
 	glVertex3f(BOX_SIZE/2, BOX_SIZE/2,BOX_SIZE/5);
 	glEnd();
 
+	//kaca hitam mobil
+	glColor3f(0.258824, 0.258824, 0.258824);
+	glBegin(GL_POLYGON);
+	glVertex3f(BOX_SIZE/2-0.5f, 0,BOX_SIZE/3+0.1f); 
+	glVertex3f(-BOX_SIZE/2+0.5f, 0,BOX_SIZE/3+0.1f); 
+	glVertex3f(-BOX_SIZE/2+0.5f, BOX_SIZE/2-0.35f,BOX_SIZE/5+0.1f);
+	glVertex3f(BOX_SIZE/2-0.5f, BOX_SIZE/2-0.35f,BOX_SIZE/5+0.1f);
+	glEnd();
+
 	//Atap Mobil
-	glColor3f(0.5,1,0);
+	glColor3f(0.459084,0.184313,0.184313);
 	glBegin(GL_POLYGON);
 	glVertex3f(-BOX_SIZE/2, BOX_SIZE/2,BOX_SIZE/5);
 	glVertex3f(BOX_SIZE/2, BOX_SIZE/2,BOX_SIZE/5);
@@ -226,7 +235,7 @@ void drawScene() {
 	glEnd();
 
 	//KacaBelakangMobil
-	glColor3f(0.5,0.5,0.5);
+	glColor3f(0.459084,0.184313,0.184313);
 	glBegin(GL_POLYGON);
 	glVertex3f(BOX_SIZE/2, BOX_SIZE/2, -BOX_SIZE*1.2);
 	glVertex3f(-BOX_SIZE/2, BOX_SIZE/2, -BOX_SIZE*1.2);
@@ -234,8 +243,17 @@ void drawScene() {
 	glVertex3f(BOX_SIZE/2, 0, -BOX_SIZE*1.4);
 	glEnd();
 
+	//kaca hitam belakang mobil
+	glColor3f(0.258824, 0.258824, 0.258824);
+	glBegin(GL_POLYGON);
+	glVertex3f(BOX_SIZE/2-0.5f, BOX_SIZE/2, -BOX_SIZE*1.2-0.01f);
+	glVertex3f(-BOX_SIZE/2+0.5f, BOX_SIZE/2, -BOX_SIZE*1.2-0.01f);
+	glVertex3f(-BOX_SIZE/2+0.5f, 0, -BOX_SIZE*1.4-0.01f);
+	glVertex3f(BOX_SIZE/2-0.5f, 0, -BOX_SIZE*1.4-0.01f);
+	glEnd();
+
 	//Bagasi Mobil
-	glColor3f(0.5,0,0.8);
+	glColor3f(0.459084,0.184313,0.184313);
 	glBegin(GL_POLYGON);
 	glVertex3f(-BOX_SIZE/2, 0, -BOX_SIZE*1.4);
 	glVertex3f(BOX_SIZE/2, 0, -BOX_SIZE*1.4);
@@ -244,7 +262,7 @@ void drawScene() {
 	glEnd();
 
 	//Kolong Mobil
-	glColor3f(0.8,0,0.8);
+	glColor3f(0.459084,0.184313,0.184313);
 	glBegin(GL_POLYGON);
 	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2, -BOX_SIZE*1.4);
 	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2, -BOX_SIZE*1.4);
@@ -254,7 +272,7 @@ void drawScene() {
 
 
 	//Sisi Kanan Mobil
-	glColor3f(0.8,1,0.8);
+	glColor3f(0.459084,0.184313,0.184313);
 	glBegin(GL_POLYGON);
 	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2, BOX_SIZE);
 	glVertex3f(BOX_SIZE/2, -BOX_SIZE/5, BOX_SIZE);
@@ -270,7 +288,9 @@ void drawScene() {
 	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2,BOX_SIZE/3); 
 	glEnd();
 
-	glColor3f(1.0,0.4,0.8);
+
+
+	glColor3f(0.459084,0.184313,0.184313);
 	glBegin(GL_POLYGON);
 	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2, BOX_SIZE);
 	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/5, BOX_SIZE);
