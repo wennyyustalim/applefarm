@@ -197,6 +197,30 @@ void drawScene() {
 	glVertex3f(-BOX_SIZE/2,-BOX_SIZE/5,BOX_SIZE);
 	glEnd();
 
+	glColor3f(0.158824, 0.158824, 0.158824);
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2+0.5f,-BOX_SIZE/2+1.2f,BOX_SIZE+0.1f);
+	glVertex3f(BOX_SIZE/2-0.5f,-BOX_SIZE/2+1.2f,BOX_SIZE+0.1f);
+	glVertex3f(BOX_SIZE/2-0.5f,-BOX_SIZE/5,BOX_SIZE+0.1f);
+	glVertex3f(-BOX_SIZE/2+0.5f,-BOX_SIZE/5,BOX_SIZE+0.1f);
+	glEnd();
+
+	glColor3f(0.158824, 0.158824, 0.158824);
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2+0.5f,-BOX_SIZE/2+1.0f,BOX_SIZE+0.1f);
+	glVertex3f(BOX_SIZE/2-0.5f,-BOX_SIZE/2+1.0f,BOX_SIZE+0.1f);
+	glVertex3f(BOX_SIZE/2-0.5f,-BOX_SIZE/5-0.83f,BOX_SIZE+0.1f);
+	glVertex3f(-BOX_SIZE/2+0.5f,-BOX_SIZE/5-0.83f,BOX_SIZE+0.1f);
+	glEnd();
+
+	glColor3f(0.158824, 0.158824, 0.158824);
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2+0.5f,-BOX_SIZE/2+0.5f,BOX_SIZE+0.1f);
+	glVertex3f(BOX_SIZE/2-0.5f,-BOX_SIZE/2+0.5f,BOX_SIZE+0.1f);
+	glVertex3f(BOX_SIZE/2-0.5f,-BOX_SIZE/5-1.3f,BOX_SIZE+0.1f);
+	glVertex3f(-BOX_SIZE/2+0.5f,-BOX_SIZE/5-1.3f,BOX_SIZE+0.1f);
+	glEnd();
+
 	glColor3f(0.459084,0.184313,0.184313);
 	//Kap Mobil
 	glBegin(GL_POLYGON);
@@ -246,8 +270,8 @@ void drawScene() {
 	//kaca hitam belakang mobil
 	glColor3f(0.258824, 0.258824, 0.258824);
 	glBegin(GL_POLYGON);
-	glVertex3f(BOX_SIZE/2-0.5f, BOX_SIZE/2, -BOX_SIZE*1.2-0.01f);
-	glVertex3f(-BOX_SIZE/2+0.5f, BOX_SIZE/2, -BOX_SIZE*1.2-0.01f);
+	glVertex3f(BOX_SIZE/2-0.5f, BOX_SIZE/2-0.03f, -BOX_SIZE*1.2-0.01f);
+	glVertex3f(-BOX_SIZE/2+0.5f, BOX_SIZE/2-0.03f, -BOX_SIZE*1.2-0.01f);
 	glVertex3f(-BOX_SIZE/2+0.5f, 0, -BOX_SIZE*1.4-0.01f);
 	glVertex3f(BOX_SIZE/2-0.5f, 0, -BOX_SIZE*1.4-0.01f);
 	glEnd();
@@ -288,6 +312,14 @@ void drawScene() {
 	glVertex3f(BOX_SIZE/2, -BOX_SIZE/2,BOX_SIZE/3); 
 	glEnd();
 
+	// kaca kanan
+	glColor3f(0.258824, 0.258824, 0.258824);
+	glBegin(GL_POLYGON);
+	glVertex3f(BOX_SIZE/2+0.01f, 0.1f,BOX_SIZE/3-0.35f); 
+	glVertex3f(BOX_SIZE/2+0.01f, BOX_SIZE/2-0.35f,BOX_SIZE/5-0.35f);
+	glVertex3f(BOX_SIZE/2+0.01f, BOX_SIZE/2-0.35f, -BOX_SIZE*1.2+0.35f);
+	glVertex3f(BOX_SIZE/2+0.01f, 0.1f, -BOX_SIZE*1.4+0.35f);
+	glEnd();
 
 
 	glColor3f(0.459084,0.184313,0.184313);
@@ -305,6 +337,16 @@ void drawScene() {
 	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2, -BOX_SIZE*1.4);
 	glVertex3f(-BOX_SIZE/2, -BOX_SIZE/2,BOX_SIZE/3); 
 	glEnd();
+
+	// kaca kiri
+	glColor3f(0.258824, 0.258824, 0.258824);
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2-0.01f, 0,BOX_SIZE/3-0.35f); 
+	glVertex3f(-BOX_SIZE/2-0.01f, BOX_SIZE/2-0.35f,BOX_SIZE/5-0.35f);
+	glVertex3f(-BOX_SIZE/2-0.01f, BOX_SIZE/2-0.35f, -BOX_SIZE*1.2+0.35f);
+	glVertex3f(-BOX_SIZE/2-0.01f, 0, -BOX_SIZE*1.4+0.35f);
+	glEnd();
+
 	
 	// glVertex3f(BOX_SIZE/2,-BOX_SIZE/2,BOX_SIZE);
 	// draw_cylinder(-BOX_SIZE/2, -BOX_SIZE/2, 1.0, 1.0, 0.5, 0.5, 0.5);
@@ -394,7 +436,7 @@ int main(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(800, 800);
 
-	// glClearColor(1.0f, 1.0f, 1.0f);	// White Background
+	//glClearColor(1.0f, 1.0f, 1.0f);	// White Background
 
 
 	glutCreateWindow("AppleFarm - Kijang");
