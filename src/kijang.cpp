@@ -329,12 +329,12 @@ void drawScene() {
 	glVertex3f(BOX_SIZE/2+0.01f, -0.8f,BOX_SIZE/8-1.5f); 
 	glEnd();
 
-	glColor3f(0.158824, 0.158824, 0.158824);
+	glColor3f(0.155824, 0.155824, 0.155824);
 	glBegin(GL_POLYGON);
-	glVertex3f(BOX_SIZE/2+0.01f, -0.5f,BOX_SIZE/8-3.0f); 
-	glVertex3f(BOX_SIZE/2+0.01f, -0.5f, -BOX_SIZE/8-3.0f);
-	glVertex3f(BOX_SIZE/2+0.01f, -0.8f, -BOX_SIZE/8-3.0f);
-	glVertex3f(BOX_SIZE/2+0.01f, -0.8f,BOX_SIZE/8-3.0f); 
+	glVertex3f(BOX_SIZE/2+0.01f, -0.5f,BOX_SIZE/8-4.5f); 
+	glVertex3f(BOX_SIZE/2+0.01f, -0.5f, -BOX_SIZE/8-4.5f);
+	glVertex3f(BOX_SIZE/2+0.01f, -0.8f, -BOX_SIZE/8-4.5f);
+	glVertex3f(BOX_SIZE/2+0.01f, -0.8f,BOX_SIZE/8-4.5f); 
 	glEnd();
 
 
@@ -361,6 +361,22 @@ void drawScene() {
 	glVertex3f(-BOX_SIZE/2-0.01f, BOX_SIZE/2-0.35f,BOX_SIZE/5-0.35f);
 	glVertex3f(-BOX_SIZE/2-0.01f, BOX_SIZE/2-0.35f, -BOX_SIZE*1.2+0.35f);
 	glVertex3f(-BOX_SIZE/2-0.01f, 0, -BOX_SIZE*1.4+0.35f);
+	glEnd();
+
+	glColor3f(0.155824, 0.155824, 0.155824);
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2-0.01f, -0.5f,BOX_SIZE/8-1.5f); 
+	glVertex3f(-BOX_SIZE/2-0.01f, -0.5f, -BOX_SIZE/8-1.5f);
+	glVertex3f(-BOX_SIZE/2-0.01f, -0.8f, -BOX_SIZE/8-1.5f);
+	glVertex3f(-BOX_SIZE/2-0.01f, -0.8f,BOX_SIZE/8-1.5f); 
+	glEnd();
+
+	glColor3f(0.155824, 0.155824, 0.155824);
+	glBegin(GL_POLYGON);
+	glVertex3f(-BOX_SIZE/2-0.01f, -0.5f,BOX_SIZE/8-4.5f); 
+	glVertex3f(-BOX_SIZE/2-0.01f, -0.5f, -BOX_SIZE/8-4.5f);
+	glVertex3f(-BOX_SIZE/2-0.01f, -0.8f, -BOX_SIZE/8-4.5f);
+	glVertex3f(-BOX_SIZE/2-0.01f, -0.8f,BOX_SIZE/8-4.5f); 
 	glEnd();
 
 	
