@@ -1,5 +1,5 @@
-all: src/kijang.cpp
-	g++ -o kijang src/kijang.cpp -framework OpenGL -framework GLUT
+all: src/kijang.cpp src/imageloader.cpp
+	g++ -o kijang src/kijang.cpp src/imageloader.cpp -framework OpenGL -framework GLUT
 
 clean:
 	$(RM) kijang
