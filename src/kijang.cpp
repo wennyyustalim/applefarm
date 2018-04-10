@@ -390,7 +390,6 @@ void drawCar(int _textureId1) {
 	glEnd();
 
 	//Atap Mobil
-
     //texture for atap image 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, _textureId1);
@@ -398,25 +397,16 @@ void drawCar(int _textureId1) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glColor3f(1.0f, 1.0f, 1.0f);
 
-	// glBegin(GL_QUADS);
-	////Left face  picture
-	// glNormal3f(0.0, 0.0f, 1.0f);
-	// glTexCoord2f(0.0f, 0.0f);
- //    glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	// glTexCoord2f(1.0f, 0.0f);
-	// glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	// glTexCoord2f(1.0f, 1.0f);
- //    glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	// glTexCoord2f(0.0f, 1.0f);
-	// glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	// glEnd();
-
-
 	// glColor3f(0.459084,0.184313,0.184313);
 	glBegin(GL_POLYGON);
+	glNormal3f(0.0, 0.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-BOX_SIZE/2, BOX_SIZE/2,BOX_SIZE/5);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(BOX_SIZE/2, BOX_SIZE/2,BOX_SIZE/5);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(BOX_SIZE/2, BOX_SIZE/2, -BOX_SIZE*1.2);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-BOX_SIZE/2, BOX_SIZE/2, -BOX_SIZE*1.2);
 	glEnd();
 
