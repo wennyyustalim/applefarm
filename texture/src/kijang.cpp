@@ -15,9 +15,6 @@ using namespace std;
 
 // Variables OpenGL id of the texture
 GLuint _textureId;
-GLuint _textureId2;
-GLuint _textureIdbk;
-GLuint _textureFloorId;
 
 void draw_cylinder(GLfloat x,
 				   GLfloat y,
@@ -162,19 +159,10 @@ void initRendering() {
 	glEnable(GL_COLOR_MATERIAL);
 
 	Image* image = loadBMP("images/right.bmp");
-	Image* image2 = loadBMP("images/left.bmp");
-	Image* image3 = loadBMP("images/bk.bmp");
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);// make it transparent 
-	Image* imageF = loadBMP("images/vtr.bmp");
 	_textureId = loadTexture(image);
-	_textureId2 = loadTexture(image2);
-	_textureIdbk = loadTexture(image3);
-	_textureFloorId = loadTexture(imageF);
 	
 	delete image;
-	delete image2;
-	delete image3;
-	delete imageF;
 }
 
 void handleResize(int w, int h) {
@@ -184,138 +172,13 @@ void handleResize(int w, int h) {
 	gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
 }
 
-void drawCube(int _textureId1,int _textureId2,int _textureId3, int _textureId4, int _textureId5, int _textureId6) {
-	glDisable(GL_TEXTURE_2D);
-	glPushMatrix();
-	glRotatef(-angleX, 1.0f, 1.0f, 0.0f);
-	
-    //texture for left image 
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, _textureId1);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glColor3f(1.0f, 1.0f, 1.0f);
-
-	glBegin(GL_QUADS);
-	////Left face  picture
-	glNormal3f(0.0, 0.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(-BOX_SIZE, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glEnd();
-
-	//Right face picture
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, _textureId2);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glColor3f(1.0f, 1.0f, 1.0f);
-
-	glBegin(GL_QUADS);
-	glNormal3f(0.0, 0.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-    glEnd();
-
-	//Front face picture if fixed its default
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, _textureId3);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glColor3f(1.0f, 1.0f, 1.0f);
-
-	glBegin(GL_QUADS);
-	glNormal3f(0.0, 0.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glEnd();
-	
-	//Back face picture
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, _textureId4);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glColor3f(1.0f, 1.0f, 1.0f);
-
-	glBegin(GL_QUADS);
-	glNormal3f(0.0, 0.0f, -1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glEnd();
-
-
-	//Top face
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, _textureId5);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glColor3f(1.0f, 1.0f, 1.0f);
-
-	glBegin(GL_QUADS);
-	glNormal3f(0.0, 1.0f,1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glEnd();
-
-	//Bottom face
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, _textureId6);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glColor3f(1.0f, 1.0f, 1.0f);
-
-	glBegin(GL_QUADS);
-	glNormal3f(0.0, -1.0f, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glEnd();
-
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
-}
-
-void drawCar(int _textureId1) {
+void drawCar(int _textureId) {
 	glRotatef(-angleX, 0.0f, 1.0f, 0.0f);
 	glRotatef(-angleY, 1.0f, 0.0f, 0.0f);
 
 	// glColor3f(0.459084,0.184313,0.184313);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, _textureId1);
+	glBindTexture(GL_TEXTURE_2D, _textureId);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glColor3f(1.0f, 1.0f, 1.0f);
@@ -392,7 +255,7 @@ void drawCar(int _textureId1) {
 	//Atap Mobil
     //texture for atap image 
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, _textureId1);
+	glBindTexture(GL_TEXTURE_2D, _textureId);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glColor3f(1.0f, 1.0f, 1.0f);
@@ -531,10 +394,6 @@ void drawCar(int _textureId1) {
 	glVertex3f(-BOX_SIZE/2-0.01f, -0.8f,BOX_SIZE/8-4.5f); 
 	glEnd();
 
-	
-	// glVertex3f(BOX_SIZE/2,-BOX_SIZE/2,BOX_SIZE);
-	// draw_cylinder(-BOX_SIZE/2, -BOX_SIZE/2, 1.0, 1.0, 0.5, 0.5, 0.5);
-	// draw_cylinder(0.0, 0.0, 3.0, 3.0, 0.5, 0.5, 0.5);
 	glColor3f(1,1,1);
 	// Roda kiri depan
 	GLUquadricObj *quadratic;
@@ -629,14 +488,10 @@ void drawScene() {
 	//draw cube
 	glPushMatrix();
 	glTranslatef(0, BOX_SIZE, -10);
-	// drawCube(_textureId, _textureIdbk, _textureId2, _textureIdbk, _textureIdbk, _textureIdbk);
 	drawCar(_textureId);
 	glPopMatrix();
-	//end of draw cube
-
 
 	glDisable(GL_TEXTURE_2D);
-
 	glutSwapBuffers();
 }
 
@@ -645,7 +500,6 @@ int main(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(800, 800);
 
-	//glClearColor(1.0f, 1.0f, 1.0f);	// White Background
 	glutCreateWindow("AppleFarm - Kijang");
 	initRendering();
 	
@@ -654,8 +508,6 @@ int main(int argc, char** argv) {
 	glutMouseFunc(mouseClickHandler);
 	glutMotionFunc(processMouseActiveMotion);
 	glutReshapeFunc(handleResize);
-	// glutTimerFunc(25wwupdate, 0);
-	// glClear ( GL_COLOR_BUFFER_BIT ) ;
 	glutMainLoop();
 	return 0;
 }
