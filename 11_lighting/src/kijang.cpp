@@ -61,6 +61,13 @@ const float BOX_SIZE = 5.0f; //The length of each side of the cube
 float angleX = 0;            //The rotation of the box
 float angleY = 0;
 
+// Koordinat slider button
+float x1 = -8.0f;
+float x2 = -7.5f;
+float x3 = -7.5f;
+float x4 = -8.0f;
+
+
 void incrementAngle(float& angle) {
 	angle+=3.0f;
 	if(angle > 360) {
@@ -89,6 +96,20 @@ void decreaseLighting() {
 	}
 }
 
+// Move slider
+void slideRight() {
+	x1+=0.5f;
+	x2+=0.5f;
+	x3+=0.5f;
+	x4+=0.5f;
+}
+
+void slideLeft() {
+	x1-=0.5f;
+	x2-=0.5f;
+	x3-=0.5f;
+	x4-=0.5f;
+}
 
 int prevX = 0;
 int prevY = 0;
@@ -154,6 +175,20 @@ void handleKeypress(unsigned char key, int x, int y) {
 		case 'i':
 			decreaseLighting();
 			break;
+		case 'M':
+		case 'm':
+			if(x2 < 8.0f) {
+				slideRight();
+				increaseLighting();
+			}
+			break;
+		case 'N':
+		case 'n':
+			if(x1 > -8.0f) {
+				slideLeft();
+				decreaseLighting();
+			}
+			break;
 	}
 	glutPostRedisplay();
 }
@@ -195,7 +230,34 @@ void handleResize(int w, int h) {
 	gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
 }
 
+void drawSlider() {
+
+	//Slider Button
+	glBegin(GL_POLYGON);
+	glColor3f(0.7f, 0.7f, 0.7f);
+	glVertex3f(x1, -10.5f, 6.0f);
+	glVertex3f(x2, -10.5f, 6.0f);
+	glVertex3f(x3, -9.0f, 6.0f);
+	glVertex3f(x4, -9.0f, 6.0f);
+	glEnd();
+
+
+	//Slider Bar
+	glBegin(GL_POLYGON);
+	glColor3f(0.5f, 0.5f, 0.5f);
+	glVertex3f(-8.0f, -10.0f, 6.0f);
+	glVertex3f(8.0f, -10.0f, 6.0f);
+	glVertex3f(8.0f, -9.5f, 6.0f);
+	glVertex3f(-8.0f, -9.5f, 6.0f);
+	glEnd();
+	
+
+}
+
 void drawCar(int _textureId) {
+
+	
+
 	glRotatef(-angleX, 0.0f, 1.0f, 0.0f);
 	glRotatef(-angleY, 1.0f, 0.0f, 0.0f);
 
@@ -205,6 +267,8 @@ void drawCar(int _textureId) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glColor3f(1.0f, 1.0f, 1.0f);
+
+	
 
 	//Front Face
 	glBegin(GL_POLYGON);
@@ -511,6 +575,7 @@ void drawScene() {
 	//draw cube
 	glPushMatrix();
 	glTranslatef(0, BOX_SIZE, -10);
+	drawSlider();
 	drawCar(_textureId);
 	glPopMatrix();
 
