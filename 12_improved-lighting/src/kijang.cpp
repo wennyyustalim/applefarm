@@ -8,6 +8,11 @@
 #include <GL/glut.h>
 #endif
 #define PI 3.1415927
+#define AMBIENCE 0
+#define DIFFUSE 1
+#define SPECULAR 2
+#define INCREASE 3
+#define DECREASE 4
 
 #include "imageloader.h"
 
@@ -61,20 +66,9 @@ float angleX = 0;            //The rotation of the box
 float angleY = 0;
 
 // Slider button coordinates
-float x1_ambient = -8.0f;
-float x2_ambient = -7.5f;
-float x3_ambient = -7.5f;
-float x4_ambient = -8.0f;
-
-float x1_diffuse = -8.0f;
-float x2_diffuse = -7.5f;
-float x3_diffuse = -7.5f;
-float x4_diffuse = -8.0f;
-
-float x1_specular = -8.0f;
-float x2_specular = -7.5f;
-float x3_specular = -7.5f;
-float x4_specular = -8.0f;
+float ambientSliderButton[] = {-8.0f, -7.5f, -7.5f, -8.0f};
+float diffuseSliderButton[] = {-8.0f, -7.5f, -7.5f, -8.0f};
+float specularSliderButton[] = {-8.0f, -7.5f, -7.5f, -8.0f};
 
 void incrementAngle(float& angle) {
 	angle+=3.0f;
@@ -92,87 +86,42 @@ void decrementAngle(float& angle) {
 
 // Adjust lighting for the car
 GLfloat ambientLight[] = {0.0f, 0.0f, 0.0f, 0.0f};
-GLfloat diffuseLight[] = {0.5f, 0.5f, 0.5f, 0.5f};
-GLfloat specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};
+GLfloat diffuseLight[] = {0.0f, 0.0f, 0.0f, 0.0f};
+GLfloat specularLight[] = {0.0f, 0.0f, 0.0f, 0.0f};
 GLfloat lightPos[] = {-2 * MODEL_SIZE, MODEL_SIZE, 4 * MODEL_SIZE, 1.0f};
 
-void increaseAmbient() {
-	for (int i = 0; i < 3; i++) {
-		ambientLight[i] += 0.1f;
+void adjustLighting(int type, int intensity) {
+	switch (type) {
+		case AMBIENCE:
+			if (intensity == INCREASE) for (int i = 0; i < 3; i++) ambientLight[i] += 0.1f;
+			else if (intensity == DECREASE) for (int i = 0; i < 3; i++) ambientLight[i] -= 0.1f;
+			break;
+		case DIFFUSE:
+			if (intensity == INCREASE) for (int i = 0; i < 3; i++) diffuseLight[i] += 0.1f;
+			else if (intensity == DECREASE) for (int i = 0; i < 3; i++) diffuseLight[i] -= 0.1f;
+			break;
+		case SPECULAR:
+			if (intensity == INCREASE) for (int i = 0; i < 3; i++) specularLight[i] += 0.1f;
+			else if (intensity == DECREASE) for (int i = 0; i < 3; i++) specularLight[i] -= 0.1f;
+			break;
 	}
 }
 
-void decreaseAmbient() {
-	for (int i = 0; i < 3; i++) {
-		ambientLight[i] -= 0.1f;
+void moveSlider(int type, int direction) {
+	switch (type) {
+		case AMBIENCE:
+			if (direction == INCREASE) for (int i = 0; i < 4; i++) ambientSliderButton[i] += 0.5f;
+			else if (direction == DECREASE) for (int i = 0; i < 4; i++) ambientSliderButton[i] -= 0.5f;
+			break;
+		case DIFFUSE:
+			if (direction == INCREASE) for (int i = 0; i < 4; i++) diffuseSliderButton[i] += 0.5f;
+			else if (direction == DECREASE) for (int i = 0; i < 4; i++) diffuseSliderButton[i] -= 0.5f;
+			break;
+		case SPECULAR:
+			if (direction == INCREASE) for (int i = 0; i < 4; i++) specularSliderButton[i] += 0.5f;
+			else if (direction == DECREASE) for (int i = 0; i < 4; i++) specularSliderButton[i] -= 0.5f;
+			break;
 	}
-}
-
-void increaseDiffuse() {
-	for (int i = 0; i < 3; i++) {
-		diffuseLight[i] += 0.1f;
-	}
-}
-
-void decreaseDiffuse() {
-	for (int i = 0; i < 3; i++) {
-		diffuseLight[i] -= 0.1f;
-	}
-}
-
-void increaseSpecular() {
-	for (int i = 0; i < 3; i++) {
-		specularLight[i] += 0.1f;
-	}
-}
-
-void decreaseSpecular() {
-	for (int i = 0; i < 3; i++) {
-		specularLight[i] -= 0.1f;
-	}
-}
-
-// Move sliders
-void slideAmbientRight() {
-	x1_ambient += 0.5f;
-	x2_ambient += 0.5f;
-	x3_ambient += 0.5f;
-	x4_ambient += 0.5f;
-}
-
-void slideAmbientLeft() {
-	x1_ambient -= 0.5f;
-	x2_ambient -= 0.5f;
-	x3_ambient -= 0.5f;
-	x4_ambient -= 0.5f;
-}
-
-void slideDiffuseRight() {
-	x1_diffuse += 0.5f;
-	x2_diffuse += 0.5f;
-	x3_diffuse += 0.5f;
-	x4_diffuse += 0.5f;
-}
-
-void slideDiffuseLeft() {
-	x1_diffuse -= 0.5f;
-	x2_diffuse -= 0.5f;
-	x3_diffuse -= 0.5f;
-	x4_diffuse -= 0.5f;
-}
-
-void slideSpecularRight() {
-	x1_specular += 0.5f;
-	x2_specular += 0.5f;
-	x3_specular += 0.5f;
-	x4_specular += 0.5f;
-}
-
-void slideSpecularLeft() {
-	x1_specular -= 0.5f;
-	x2_specular -= 0.5f;
-	x3_specular -= 0.5f;
-	x4_specular -= 0.5f;
 }
 
 int prevX = 0;
@@ -232,44 +181,44 @@ void handleKeypress(unsigned char key, int x, int y) {
 		// Sliders
 		case 'U':
 		case 'u':
-			if(x1_ambient > -8.0f) {
-				slideAmbientLeft();
-				decreaseAmbient();
+			if(ambientSliderButton[0] > -8.0f) {
+				moveSlider(AMBIENCE,DECREASE);
+				adjustLighting(AMBIENCE, DECREASE);
 			}
 			break;
 		case 'I':
 		case 'i':
-			if(x2_ambient < 8.0f) {
-				slideAmbientRight();
-				increaseAmbient();
+			if(ambientSliderButton[1] < 8.0f) {
+				moveSlider(AMBIENCE, INCREASE);
+				adjustLighting(AMBIENCE, INCREASE);
 			}
 			break;
 		case 'J':
 		case 'j':
-			if (x1_diffuse > -8.0f) {
-				slideDiffuseLeft();
-				decreaseDiffuse();				
+			if (diffuseSliderButton[0] > -8.0f) {
+				moveSlider(DIFFUSE, DECREASE);
+				adjustLighting(DIFFUSE, DECREASE);		
 			}
 			break;
 		case 'K':
 		case 'k':
-			if (x2_diffuse < 8.0f) {
-				slideDiffuseRight();
-				increaseDiffuse();				
-			}
-			break;
-		case 'M':
-		case 'm':
-			if (x2_specular < 8.0f) {
-				slideSpecularRight();
-				increaseSpecular();
+			if (diffuseSliderButton[1] < 8.0f) {
+				moveSlider(DIFFUSE, INCREASE);
+				adjustLighting(DIFFUSE, INCREASE);			
 			}
 			break;
 		case 'N':
 		case 'n':
-			if (x1_specular > -8.0f) {
-				slideSpecularLeft();
-				decreaseSpecular();				
+			if (specularSliderButton[0] > -8.0f) {
+				moveSlider(SPECULAR, DECREASE);
+				adjustLighting(SPECULAR, DECREASE);
+			}
+			break;
+		case 'M':
+		case 'm':
+			if (specularSliderButton[1] < 8.0f) {
+				moveSlider(SPECULAR, INCREASE);
+				adjustLighting(SPECULAR, INCREASE);
 			}
 			break;
 
@@ -319,28 +268,28 @@ void drawSlider() {
 	//Ambience slider
 	glBegin(GL_POLYGON);
 	glColor3f(0.7f, 0.7f, 0.7f);
-	glVertex3f(x1_ambient, -9.5f, 6.0f);
-	glVertex3f(x2_ambient, -9.5f, 6.0f);
-	glVertex3f(x3_ambient, -8.0f, 6.0f);
-	glVertex3f(x4_ambient, -8.0f, 6.0f);
+	glVertex3f(ambientSliderButton[0], -9.5f, 6.0f);
+	glVertex3f(ambientSliderButton[1], -9.5f, 6.0f);
+	glVertex3f(ambientSliderButton[2], -8.0f, 6.0f);
+	glVertex3f(ambientSliderButton[3], -8.0f, 6.0f);
 	glEnd();
 
 	//Diffuse Button
 	glBegin(GL_POLYGON);
 	glColor3f(0.5f, 0.5f, 0.5f);
-	glVertex3f(x1_diffuse, -11.5f, 6.0f);
-	glVertex3f(x2_diffuse, -11.5f, 6.0f);
-	glVertex3f(x3_diffuse, -10.0f, 6.0f);
-	glVertex3f(x4_diffuse, -10.0f, 6.0f);
+	glVertex3f(diffuseSliderButton[0], -11.5f, 6.0f);
+	glVertex3f(diffuseSliderButton[1], -11.5f, 6.0f);
+	glVertex3f(diffuseSliderButton[2], -10.0f, 6.0f);
+	glVertex3f(diffuseSliderButton[3], -10.0f, 6.0f);
 	glEnd();
 
 	//Specular Button
 	glBegin(GL_POLYGON);
 	glColor3f(0.5f, 0.5f, 0.5f);
-	glVertex3f(x1_specular, -13.5f, 6.0f);
-	glVertex3f(x2_specular, -13.5f, 6.0f);
-	glVertex3f(x3_specular, -12.0f, 6.0f);
-	glVertex3f(x4_specular, -12.0f, 6.0f);
+	glVertex3f(specularSliderButton[0], -13.5f, 6.0f);
+	glVertex3f(specularSliderButton[1], -13.5f, 6.0f);
+	glVertex3f(specularSliderButton[2], -12.0f, 6.0f);
+	glVertex3f(specularSliderButton[3], -12.0f, 6.0f);
 	glEnd();
 
 	//Ambience slider
