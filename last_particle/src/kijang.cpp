@@ -657,6 +657,7 @@ void drawCar(int _textureId) {
 
 	gluDeleteQuadric(quadratic2);
 
+	// Roda kiri belakang
 	quadratic = gluNewQuadric();
 	gluDisk(quadratic,0.0f,1.0f,32,32);
 	gluDeleteQuadric(quadratic);
@@ -665,8 +666,33 @@ void drawCar(int _textureId) {
 	gluDisk(quadratic,0.0f,1.0f,32,32);
 	gluDeleteQuadric(quadratic);
 	glTranslatef(0,0,-1);
-	
-	glRotated(-90.0f, 0.0f, 1.0f, 0.0f);
+	glRotated(0.0f, 0.0f, 1.0f, 0.0f);
+
+	// Kenalpot
+	glColor3f(0.2, 0.2, 0.2);
+	glTranslatef(2.5f,0,-1.0f);
+	glRotated(90.0f, 0.0f, 1.0f, 0.0f);
+	quadratic2 = gluNewQuadric();
+	gluCylinder(quadratic2,0.3f,0.3f,1.0f,32,32);
+	gluDeleteQuadric(quadratic2);
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,0.3f,32,32);
+	gluDeleteQuadric(quadratic);
+
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,0.1f,32,32);
+	gluDeleteQuadric(quadratic);
+
+	glColor3f(0, 0, 0);
+	glTranslatef(0,0,1);
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,0.2f,32,32);
+	gluDeleteQuadric(quadratic);
+
+	glColor3f(0.2, 0.2, 0.2);
+	quadratic = gluNewQuadric();
+	gluDisk(quadratic,0.0f,0.3f,32,32);
+	gluDeleteQuadric(quadratic);
 }
 
 void timerController(int) {
