@@ -209,6 +209,8 @@ void processMouseActiveMotion(int x, int y) {
 	glutPostRedisplay();
 }
 
+bool gas= false;
+
 
 void handleKeypress(unsigned char key, int x, int y) {
 	switch (key) {
@@ -273,6 +275,10 @@ void handleKeypress(unsigned char key, int x, int y) {
 				slideSpecularLeft();
 				decreaseSpecular();				
 			}
+			break;
+		case 'G':
+		case 'g':
+			gas= !gas;
 			break;
 
 	}
@@ -723,27 +729,77 @@ class Droplet{
 	public:
 		GLfloat x;
 		GLfloat z;
-		GLfloat opacity = 1;
+		GLfloat opacity = 0.1;
 		bool fade() {
 			if(opacity < 0) {
 				return true;
 			}
-			opacity-=0.01;
+			opacity-=0.001;
 			return false;
 		}
 		
 };
 
 class Smoke {
+	public:
 	GLfloat x;
 	GLfloat y;
 	GLfloat z;
-	GLfloat opacity;
+	GLfloat offset=0;
+	GLfloat size = .01f;
+	GLfloat opacity = 1;
+	int multiplier = 0;
+	bool increment() {
+		if(opacity < 0) {
+			return true;
+		}
+		multiplier++;
+		opacity -= 0.01;
+		z+=0.001;
+		offset+= pow(1.006,multiplier) * 0.02;
+		size+=.005;
+		return false;
+	}
 };
 
 vector<Raindrop> raindrops;
 vector<Droplet> droplets;
+vector<Smoke> smokes;
 
+void drawSmoke() {
+	if(gas) {
+		int n = rand();
+		if(n%10 == 8) {
+			for(int i=0;i<n%68;i++) {
+				Smoke smoke;
+				smoke.x = (n%127)%30/100;
+				smoke.y = (n%131)%30/100 - .1f;
+				smoke.z = 0.2f;
+				smokes.push_back(smoke);
+			}
+		}
+	} 
+
+	int i = 1;
+	for(vector<Smoke>::iterator it = smokes.begin(); it != smokes.end();) {
+		if(it->increment()) {
+			it = smokes.erase(it);
+		} else {
+			glColor4f(0,0,0,it->opacity);
+			GLfloat zz = it->z + it->offset;
+			GLfloat yy = it->y  + (it->offset);
+			glBegin(GL_POLYGON);
+			glVertex3d(it->x, yy, zz);
+			glVertex3d(it->x-it->size, yy, zz);
+			glVertex3d(it->x-it->size, yy+it->size, zz);
+			glVertex3d(it->x, yy+it->size, zz);
+			glEnd();
+			++it;
+		}
+	}
+	
+	
+}
 
 void drawRain() {
 	glColor3f(.306f, .408f, .506f);
@@ -767,7 +823,6 @@ void drawRain() {
 			Droplet droplet;
 			droplet.x = it->x;
 			droplet.z = it->z;
-			droplet.opacity = 1;
 			droplets.push_back(droplet);
 			it = raindrops.erase(it);
 		} else {
@@ -782,8 +837,7 @@ void drawRain() {
 		if(it->fade()) {
 			it = droplets.erase(it);
 		} else {
-			glBlendFunc(GL_SRC_ALPHA, GL_CONSTANT_ALPHA);
-			glColor4f(.4f, .4f, .4f, it->opacity);
+			glColor3f(.3f+it->opacity, .3f+it->opacity, .3f+it->opacity);
 			glTranslated(it->x,-12-MODEL_SIZE,it->z);
 			glRotated(90, 1,0,0);
 			quadratic = gluNewQuadric();
@@ -821,6 +875,7 @@ void drawScene() {
 	// drawSlider();
 	drawRain();
 	drawCar(_textureId);
+	drawSmoke();
 	glPopMatrix();
 	
 	glDisable(GL_TEXTURE_2D);
