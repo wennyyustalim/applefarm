@@ -683,21 +683,38 @@ class Raindrop {
 		GLfloat z;
 		float speed = 0.2;
 		bool gravitate() {
-			if(y < -18.0f) {
+			if(y < -17.0f) {
 				return true;
 			}
 			y-= speed;
 			return false; 
 		}
 };
+
+class Droplet{
+	public:
+		GLfloat x;
+		GLfloat z;
+		GLfloat opacity = 1.0f;
+		bool fade() {
+			if(opacity < 0) {
+				return true;
+			}
+			opacity-=0.01f;
+			return false;
+		}
+		
+};
+
 vector<Raindrop> raindrops;
+vector<Droplet> droplets;
 
 
 void drawRain() {
 	glColor3f(.306f, .408f, .506f);
 	// glColor3f(0.8,0.8,0.8);
 	glRotatef(-angleX, 0.0f, 1.0f, 0.0f);
-	// glRotatef(-angleY, 1.0f, 0.0f, 0.0f);
+	glRotatef(-angleY, 1.0f, 0.0f, 0.0f);
 	if(rand()%4 == 3) {
 		Raindrop raindrop;
 		raindrop.x = rand()%26 - 12.5;
@@ -708,8 +725,14 @@ void drawRain() {
 
 		raindrops.push_back(raindrop);
 	}
+
 	for(vector<Raindrop>::iterator it = raindrops.begin(); it!= raindrops.end();) {
 		if(it->gravitate()) {
+			Droplet droplet;
+			droplet.x = it->x;
+			droplet.z = it->z;
+			droplet.opacity = 1;
+			droplets.push_back(droplet);
 			it = raindrops.erase(it);
 		} else {
 			glBegin(GL_LINES);
@@ -718,11 +741,24 @@ void drawRain() {
 			glEnd();
 			++it;
 		}
-		
 	}
-	// for(int i=0; i<150; i++) {
-			
-	// }
+	for(vector<Droplet>::iterator it = droplets.begin(); it!= droplets.end();) {
+		if(it->fade()) {
+			it = droplets.erase(it);
+		} else {
+			glColor4f(.4f, .4f, .4f, it->opacity);
+			GLUquadricObj *quadratic;
+			glTranslated(it->x,-12-MODEL_SIZE,it->z);
+			glRotated(90, 1,0,0);
+			quadratic = gluNewQuadric();
+			gluDisk(quadratic,0.0f,.2f,32,32);
+			gluDeleteQuadric(quadratic);
+			glColor3f(.306f, .408f, .506f);
+			glRotated(90, -1,0,0);
+			glTranslated(-it->x,12+MODEL_SIZE,-it->z);
+		}
+	
+	}
 
 }
 
@@ -737,7 +773,9 @@ void drawScene() {
 
 	glTranslatef(0.0f, 0.0f, -20.0f);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
-	
+	glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
     glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
@@ -749,7 +787,7 @@ void drawScene() {
 	drawRain();
 	drawCar(_textureId);
 	glPopMatrix();
-
+	
 	glDisable(GL_TEXTURE_2D);
 	glutSwapBuffers();
 }
