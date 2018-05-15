@@ -723,12 +723,12 @@ class Droplet{
 	public:
 		GLfloat x;
 		GLfloat z;
-		GLfloat opacity = 0.1;
+		GLfloat opacity = 1;
 		bool fade() {
 			if(opacity < 0) {
 				return true;
 			}
-			opacity-=0.001;
+			opacity-=0.01;
 			return false;
 		}
 		
@@ -767,6 +767,7 @@ void drawRain() {
 			Droplet droplet;
 			droplet.x = it->x;
 			droplet.z = it->z;
+			droplet.opacity = 1;
 			droplets.push_back(droplet);
 			it = raindrops.erase(it);
 		} else {
@@ -781,9 +782,8 @@ void drawRain() {
 		if(it->fade()) {
 			it = droplets.erase(it);
 		} else {
-			glBlendColor(1.0f, 1.0f, 1.0f, 0);
 			glBlendFunc(GL_SRC_ALPHA, GL_CONSTANT_ALPHA);
-			glColor3f(.3f+it->opacity, .3f+it->opacity, .3f+it->opacity);
+			glColor4f(.4f, .4f, .4f, it->opacity);
 			glTranslated(it->x,-12-MODEL_SIZE,it->z);
 			glRotated(90, 1,0,0);
 			quadratic = gluNewQuadric();
@@ -821,7 +821,6 @@ void drawScene() {
 	// drawSlider();
 	drawRain();
 	drawCar(_textureId);
-	drawSmoke();
 	glPopMatrix();
 	
 	glDisable(GL_TEXTURE_2D);
