@@ -131,6 +131,8 @@ void decreaseSpecular() {
 		specularLight[i] -= 0.1f;
 	}
 }
+			GLUquadricObj *quadratic;
+
 
 // Move sliders
 void slideAmbientRight() {
@@ -673,7 +675,7 @@ void drawCar(int _textureId) {
 	glTranslatef(2.5f,0,-1.0f);
 	glRotated(90.0f, 0.0f, 1.0f, 0.0f);
 	quadratic2 = gluNewQuadric();
-	gluCylinder(quadratic2,0.3f,0.3f,1.0f,32,32);
+	gluCylinder(quadratic2,0.3f,0.3f,.5f,32,32);
 	gluDeleteQuadric(quadratic2);
 	quadratic = gluNewQuadric();
 	gluDisk(quadratic,0.0f,0.3f,32,32);
@@ -684,7 +686,7 @@ void drawCar(int _textureId) {
 	gluDeleteQuadric(quadratic);
 
 	glColor3f(0, 0, 0);
-	glTranslatef(0,0,1);
+	glTranslatef(0,0,0.5);
 	quadratic = gluNewQuadric();
 	gluDisk(quadratic,0.0f,0.2f,32,32);
 	gluDeleteQuadric(quadratic);
@@ -721,15 +723,22 @@ class Droplet{
 	public:
 		GLfloat x;
 		GLfloat z;
-		GLfloat opacity = 1.0f;
+		GLfloat opacity = 0.1;
 		bool fade() {
 			if(opacity < 0) {
 				return true;
 			}
-			opacity-=0.01f;
+			opacity-=0.001;
 			return false;
 		}
 		
+};
+
+class Smoke {
+	GLfloat x;
+	GLfloat y;
+	GLfloat z;
+	GLfloat opacity;
 };
 
 vector<Raindrop> raindrops;
@@ -741,13 +750,14 @@ void drawRain() {
 	// glColor3f(0.8,0.8,0.8);
 	glRotatef(-angleX, 0.0f, 1.0f, 0.0f);
 	glRotatef(-angleY, 1.0f, 0.0f, 0.0f);
-	if(rand()%4 == 3) {
+	int randx = rand();
+	if(randx%4 == 3) {
 		Raindrop raindrop;
-		raindrop.x = rand()%26 - 12.5;
+		raindrop.x = randx%26 - 12.5;
 		raindrop.y = 15;
 		raindrop.z = rand()%40 - 20;		
-		int speed = rand()%10;
-		raindrop.speed = (speed*.01) + .1;
+		int speed = randx%10;
+		raindrop.speed = ((speed*.01) + .1)*1.5;
 
 		raindrops.push_back(raindrop);
 	}
@@ -757,7 +767,6 @@ void drawRain() {
 			Droplet droplet;
 			droplet.x = it->x;
 			droplet.z = it->z;
-			droplet.opacity = 1;
 			droplets.push_back(droplet);
 			it = raindrops.erase(it);
 		} else {
@@ -772,8 +781,9 @@ void drawRain() {
 		if(it->fade()) {
 			it = droplets.erase(it);
 		} else {
-			glColor4f(.4f, .4f, .4f, it->opacity);
-			GLUquadricObj *quadratic;
+			glBlendColor(1.0f, 1.0f, 1.0f, 0);
+			glBlendFunc(GL_SRC_ALPHA, GL_CONSTANT_ALPHA);
+			glColor3f(.3f+it->opacity, .3f+it->opacity, .3f+it->opacity);
 			glTranslated(it->x,-12-MODEL_SIZE,it->z);
 			glRotated(90, 1,0,0);
 			quadratic = gluNewQuadric();
@@ -782,26 +792,25 @@ void drawRain() {
 			glColor3f(.306f, .408f, .506f);
 			glRotated(90, -1,0,0);
 			glTranslated(-it->x,12+MODEL_SIZE,-it->z);
+			it++;
 		}
-	
+
 	}
 
 }
 
 
 void drawScene() {
-	glClearColor(.5294f, .8078f,  .9216f, 1.0f);	// White Background
-		glClearColor(.027f, .0f,  .345f, 1.0f);	// White Background
+	glClearColor(.027f, .0f,  .345f, 1.0f);	// White Background
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glTranslatef(0.0f, 0.0f, -20.0f);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
-	glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
     glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
@@ -812,6 +821,7 @@ void drawScene() {
 	// drawSlider();
 	drawRain();
 	drawCar(_textureId);
+	drawSmoke();
 	glPopMatrix();
 	
 	glDisable(GL_TEXTURE_2D);
@@ -823,8 +833,8 @@ int main(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(800, 800);
 	srand((unsigned)time(0)); 
-
 	glutCreateWindow("AppleFarm - Kijang");
+	
 	initRendering();
 	timerController(0);
 	glutDisplayFunc(drawScene);
