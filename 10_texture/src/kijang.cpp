@@ -106,12 +106,10 @@ void processMouseActiveMotion(int x, int y) {
 	prevX = x;
 	prevY = y;
 	glutPostRedisplay();
-	// printf("%d %d\n",x,y ); 	
 }
 
 
 void handleKeypress(unsigned char key, int x, int y) {
-	// printf("key: %c\n", key);
 	switch (key) {
 		case 27: //Escape key
 			exit(0);
@@ -135,7 +133,6 @@ void handleKeypress(unsigned char key, int x, int y) {
 	glutPostRedisplay();
 }
 
-//Makes the image into a texture, and returns the id of the texture
 GLuint loadTexture(Image* image) {
 	GLuint textureId;
 	glGenTextures(1, &textureId);
@@ -176,7 +173,6 @@ void drawCar(int _textureId) {
 	glRotatef(-angleX, 0.0f, 1.0f, 0.0f);
 	glRotatef(-angleY, 1.0f, 0.0f, 0.0f);
 
-	// glColor3f(0.459084,0.184313,0.184313);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, _textureId);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
