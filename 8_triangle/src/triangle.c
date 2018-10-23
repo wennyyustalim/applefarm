@@ -1,7 +1,7 @@
 #include <GLUT/glut.h>
 
 void display() {
-    glClearColor( 0, 0, 0, 1 );  // (In fact, this is the default.)
+    glClearColor( 0, 0, 0, 1 );
     glClear( GL_COLOR_BUFFER_BIT );
     
     glBegin(GL_TRIANGLES);
@@ -13,22 +13,20 @@ void display() {
     glVertex2f( 0, 0.9 );
     glEnd(); 
     
-    glutSwapBuffers(); // Required to copy color buffer onto the screen.
+    glutSwapBuffers();
  
 }
 
 
-int main( int argc, char** argv ) {  // Initialize GLUT and 
-
+int main( int argc, char** argv ) {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE);    // Use single color buffer and no depth buffer.
-    glutInitWindowSize(500,500);         // Size of display area, in pixels.
-    glutInitWindowPosition(100,100);     // Location of window in screen coordinates.
-    glutCreateWindow("GL RGB Triangle"); // Parameter is window title.
-    glutDisplayFunc(display);            // Called when the window needs to be redrawn.
+    glutInitDisplayMode(GLUT_SINGLE);
+    glutInitWindowSize(500,500);
+    glutInitWindowPosition(100,100);
+    glutCreateWindow("GL RGB Triangle");
+    glutDisplayFunc(display);
     
-    glutMainLoop(); // Run the event loop!  This function does not return.
-                    // Program ends when user closes the window.
-    return 0;
+    glutMainLoop();
 
+    return 0;
 }
