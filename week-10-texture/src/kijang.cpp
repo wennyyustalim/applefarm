@@ -7,7 +7,6 @@
 #else
 #include <GL/glut.h>
 #endif
-#define PI 3.1415927
 
 #include "imageloader.h"
 
@@ -30,7 +29,7 @@ void draw_cylinder(GLfloat x,
     glColor3ub(R-40,G-40,B-40);
     glBegin(GL_QUAD_STRIP);
     angle = 0.0;
-    while( angle < 2*PI ) {
+    while( angle < 2*M_PI ) {
         x = radius * cos(angle);
         y = radius * sin(angle);
         glVertex3f(x, y , height);
@@ -45,7 +44,7 @@ void draw_cylinder(GLfloat x,
     glColor3ub(R,G,B);
     glBegin(GL_POLYGON);
     angle = 0.0;
-    while( angle < 2*PI ) {
+    while( angle < 2*M_PI ) {
         x = radius * cos(angle);
         y = radius * sin(angle);
         glVertex3f(x, y , height);
